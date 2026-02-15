@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Задание 1 - u82314</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        .screenshot {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 15px;
+        }
+        
+        img {
+            max-width: 100%;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .small-img img {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-left: 0;
+            margin-right: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .info {
+            background-color: #d9edf7;
+            border-left: 5px solid #31708f;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid #e1e4e8;
+        }
+        .note {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отчет по заданию №1</h1>
+    
+    <h2>1. Подключение к учебному серверу</h2>
+    <div class="screenshot small-img">
+        <p><strong>Задание 1.1:</strong> Подключение по SSH к серверу kubsu-dev.ru</p>
+        <p><strong>Команда:</strong> <code>ssh u82314@kubsu-dev.ru</code></p>
+        <img src="picturres\1.1.png" alt="SSH подключение к серверу">
+        <p class="note">Скриншот подтверждает успешное подключение к учебному серверу</p>
+    </div>
+
+    <h2>2. Определение IP-адреса веб-сервера kubsu.ru</h2>
+    <div class="screenshot">
+        <p><strong>Задание 1.2:</strong> Команда ping для определения IP-адреса</p>
+        <p><strong>Команда:</strong> <code>ping -c 4 kubsu.ru</code></p>
+        <img src="picturres\1.2.png" alt="Результат ping kubsu.ru">
+        <p><strong>Результат:</strong> IP-адрес веб-сервера kubsu.ru — <strong>185.13.84.92</strong></p>
+        <p class="note">Отправлено 4 пакета, получено 4 ответа, потерь нет</p>
+    </div>
+
+    <h2>3. DNS-запросы (nslookup)</h2>
+    
+    <h3>Домен kubsu.ru</h3>
+    <div class="screenshot">
+        <p><strong>Задание 1.3.1:</strong> A-запись домена kubsu.ru</p>
+        <p><strong>Команда:</strong> <code>nslookup -type=A kubsu.ru</code></p>
+        <img src="picturres\nslookup-a-kubsu.png" alt="A-запись kubsu.ru">
+        <p><strong>IP-адрес:</strong> 185.13.84.92</p>
+    </div>
+    
+    <div class="screenshot">
+        <p><strong>Задание 1.3.2:</strong> MX-записи домена kubsu.ru</p>
+        <p><strong>Команда:</strong> <code>nslookup -type=MX kubsu.ru</code></p>
+        <img src="picturres\nslookup-mx-kubsu.png" alt="MX-записи kubsu.ru">
+        
+        <p><strong>Почтовые серверы kubsu.ru (в порядке приоритета):</strong></p>
+        <table>
+            <tr>
+                <th>Приоритет</th>
+                <th>Почтовый сервер</th>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>mx2.kubannet.ru</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>mx.kubannet.ru</td>
+            </tr>
+            <tr>
+                <td>50</td>
+                <td>mx.kubsu.ru</td>
+            </tr>
+        </table>
+        <p class="note">Чем меньше число приоритета, тем выше приоритет сервера</p>
+    </div>
+
+    <h3>Домен kubsu-dev.ru</h3>
+    <div class="screenshot">
+        <p><strong>Задание 1.3.3:</strong> A-запись домена kubsu-dev.ru</p>
+        <p><strong>Команда:</strong> <code>nslookup -type=A kubsu-dev.ru</code></p>
+        <img src="picturres\nslookup-a-kubsu-dev.png" alt="A-запись kubsu-dev.ru">
+        <p><strong>IP-адрес:</strong> 212.192.134.135</p>
+    </div>
+    
+    <div class="screenshot">
+        <p><strong>Задание 1.3.4:</strong> MX-записи домена kubsu-dev.ru</p>
+        <p><strong>Команда:</strong> <code>nslookup -type=MX kubsu-dev.ru</code></p>
+        <img src="picturres\nslookup-mx-kubsu-dev.png" alt="MX-записи kubsu-dev.ru">
+        <p><strong>Результат:</strong> MX-записи отсутствуют</p>
+        <p class="note">Домен kubsu-dev.ru используется только для учебных целей и не имеет почтовых серверов</p>
+    </div>
+
+    <h2>4. Информация о регистрации доменов (whois)</h2>
+    
+    <div class="screenshot">
+        <p><strong>Задание 1.4.1:</strong> Дата регистрации домена kubsu.ru</p>
+        <p><strong>Команда:</strong> <code>whois kubsu.ru | grep "created"</code></p>
+        <img src="picturres\whois-kubsu.png" alt="whois kubsu.ru">
+        <p><strong>Дата регистрации:</strong> 28 марта 1998 г.</p>
+    </div>
+    
+    <div class="screenshot">
+        <p><strong>Задание 1.4.2:</strong> Дата регистрации домена kubsu-dev.ru</p>
+        <p><strong>Команда:</strong> <code>whois kubsu-dev.ru | grep "created"</code></p>
+        <img src="picturres\whois-kubsu-dev.png" alt="whois kubsu-dev.ru">
+        <p><strong>Дата регистрации:</strong> 12 февраля 2020 г.</p>
+    </div>
+
+    <h3>Сводная таблица результатов whois</h3>
+    <table>
+        <tr>
+            <th>Домен</th>
+            <th>Дата регистрации</th>
+            <th>Возраст</th>
+        </tr>
+        <tr>
+            <td>kubsu.ru</td>
+            <td>1998-03-28</td>
+            <td>27 лет</td>
+        </tr>
+        <tr>
+            <td>kubsu-dev.ru</td>
+            <td>2020-02-12</td>
+            <td>6 лет</td>
+        </tr>
+    </table>
+
+    <h2>5. Публикация веб-страницы</h2>
+    <div class="screenshot">
+        <p><strong>Задание 1.5:</strong> Создание и публикация веб-страницы</p>
+        <p>Веб-страница доступна по адресу:</p>
+        <p><strong><a href="http://u82314.kubsudev.ru/lab1/" target="_blank">
+            http://u82314.kubsudev.ru/lab1/
+        </a></strong></p>
+        <p>Репозиторий Git содержит все скриншоты и файл index.html</p>
+    </div>
+
+    <h2>6. Копирование файлов через SFTP</h2>
+    <div class="screenshot">
+        <p><strong>Задание 1.6:</strong> SFTP-сессия в FileZilla</p>
+        <p><strong>Протокол:</strong> SFTP</p>
+        <p><strong>Сервер:</strong> kubsu-dev.ru</p>
+        <p><strong>Пользователь:</strong> u82314</p>
+        <img src="picturres\sftp-session.png" alt="SFTP сессия в FileZilla">
+        <p class="note">Скриншот подтверждает успешное скачивание файлов на локальный компьютер</p>
+    </div>
+</body>
+</html>
