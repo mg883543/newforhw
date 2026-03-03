@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Лабораторная работа 2 - HTTP запросы</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        .task {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            padding: 20px;
+        }
+        .screenshot {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .screenshot img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        /* Индивидуальные размеры для каждой картинки */
+        .img-http1-0 img {
+            max-width: 700px;
+        }
+        .img-http1-1 img {
+            max-width: 700px;
+        }
+        .img-file-size img {
+            max-width: 600px;
+        }
+        .img-image-png img {
+            max-width: 650px;
+        }
+        .img-post-comment img {
+            max-width: 800px;
+        }
+        .img-range-request img {
+            max-width: 750px;
+        }
+        .img-charset img {
+            max-width: 600px;
+        }
+        /* Для мобильных устройств */
+        @media (max-width: 768px) {
+            .screenshot img {
+                max-width: 100% !important;
+            }
+        }
+        .screenshot p {
+            margin-top: 8px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid #e1e4e8;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .warning {
+            color: orange;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отчет по лабораторной работе №2</h1>
+
+    <h2>1. Получение главной страницы методом GET в протоколе HTTP 1.0</h2>
+    <div class="task">
+        <p><strong>Команда:</strong></p>
+        <pre>curl -v --http1.0 -k https://u82314.kubsu-dev.ru/2files/</pre>
+        <p><strong>Результат:</strong></p>
+        <ul>
+            <li><strong>Статус:</strong> <span class="warning">302 Found</span> (редирект)</li>
+            <li><strong>Location:</strong> /?url=/2files/</li>
+            <li><strong>Content-Type:</strong> text/html; charset=UTF-8</li>
+            <li><strong>Сервер:</strong> OPNsense</li>
+        </ul>
+        <p><em>Примечание:</em> Сервер перенаправляет запросы на HTTPS и через основной скрипт.</p>
+        <div class="screenshot img-http1-0">
+            <img src="2.1-http1.0.png" alt="HTTP 1.0 GET запрос">
+            <p>Скриншот 2.1 - GET запрос в HTTP/1.0</p>
+        </div>
+    </div>
+
+    <h2>2. Получение внутренней страницы методом GET в протоколе HTTP 1.1</h2>
+    <div class="task">
+        <p><strong>Команда:</strong></p>
+        <pre>curl -v --http1.1 -k https://u82314.kubsu-dev.ru/2files/index.html</pre>
+        <p><strong>Результат:</strong></p>
+        <ul>
+            <li><strong>Статус:</strong> <span class="warning">302 Found</span> (редирект)</li>
+            <li><strong>Location:</strong> /?url=/2files/index.html</li>
+            <li><strong>Set-Cookie:</strong> PHPSESSID=...</li>
+            <li><strong>Content-Type:</strong> text/html; charset=UTF-8</li>
+        </ul>
+        <div class="screenshot img-http1-1">
+            <img src="2.2-http1.1.png" alt="HTTP 1.1 GET запрос">
+            <p>Скриншот 2.2 - GET запрос в HTTP/1.1</p>
+        </div>
+    </div>
+
+    <h2>3. Определение размера файла file.tar.gz без скачивания</h2>
+    <div class="task">
+        <p><strong>Команда:</strong></p>
+        <pre>curl -v -k -I https://u82314.kubsu-dev.ru/2files/2files/file.tar.gz</pre>
+        <p><strong>Результат (локальная проверка):</strong></p>
+        <pre>ls -la /home/u82314/www/2files/2files/file.tar.gz
+-rwxr-xr-x 1 u82314 www-data 11335 Feb 16 07:01 file.tar.gz</pre>
+        <p><strong>Размер файла:</strong> <span class="success">11335 байт</span></p>
+        <div class="screenshot img-file-size">
+            <img src="2.3-file-size.png" alt="Размер файла file.tar.gz">
+            <p>Скриншот 2.3 - Размер файла file.tar.gz</p>
+        </div>
+    </div>
+
+    <h2>4. Определение медиатипа ресурса /image.png</h2>
+    <div class="task">
+        <p><strong>Команда:</strong></p>
+        <pre>file /home/u82314/www/2files/2files/image.png</pre>
+        <p><strong>Результат:</strong></p>
+        <pre>/home/u82314/www/2files/2files/image.png: PNG image data, 640 x 400, 8-bit/color RGB, non-interlaced</pre>
+        <p><strong>Медиатип:</strong> <span class="success">image/png</span></p>
+        <p><strong>Характеристики:</strong></p>
+        <ul>
+            <li>Размер: 640×400 пикселей</li>
+            <li>Глубина цвета: 8 бит/канал</li>
+            <li>Цветовая модель: RGB</li>
+        </ul>
+        <div class="screenshot img-image-png">
+            <img src="2.4-image-png.png" alt="Медиатип image.png">
+            <p>Скриншот 2.4 - Медиатип image.png</p>
+        </div>
+    </div>
+
+    <h2>5. Отправка комментария на сервер по адресу /index.php</h2>
+    <div class="task">
+        <p><strong>Команда (с CSRF-токеном):</strong></p>
+        <pre>curl -v -k -X POST https://u82314.kubsu-dev.ru/index.php \
+  -b cookies.txt \
+  -H "X-CSRFToken: tvHh6H1vOEPKbIr080laPw" \
+  -d "comment=Тестовый комментарий от u82314&name=u82314"</pre>
+        <p><strong>Результат:</strong> <span class="success">HTTP/2 200 OK</span></p>
+        <p><strong>Детали ответа:</strong></p>
+        <ul>
+            <li>Статус: 200 OK</li>
+            <li>Content-Type: text/html; charset=UTF-8</li>
+            <li>Content-Length: 1603</li>
+            <li>Сервер: OPNsense</li>
+            <li>Сессия: PHPSESSID=4dd855ab0b4c92f3e694f809f97306f3</li>
+        </ul>
+        <div class="screenshot img-post-comment">
+            <img src="2.5-post-comment.png" alt="POST запрос с комментарием">
+            <p>Скриншот 2.5 - Отправка комментария (POST)</p>
+        </div>
+    </div>
+
+    <h2>6. Получение первых 100 байт файла /file.tar.gz</h2>
+    <div class="task">
+        <p><strong>Команда (Range запрос):</strong></p>
+        <pre>curl -v -k -r 0-99 "https://u82314.kubsu-dev.ru/?url=/2files/2files/file.tar.gz" -o first100bytes.bin</pre>
+        <p><strong>Результат:</strong> <span class="success">HTTP/2 206 Partial Content</span></p>
+        <p><strong>Детали ответа:</strong></p>
+        <ul>
+            <li>Статус: 206 Partial Content</li>
+            <li>Content-Range: bytes 0-99/1603</li>
+            <li>Content-Length: 100 байт</li>
+            <li>Content-Type: text/html; charset=UTF-8</li>
+        </ul>
+        <div class="screenshot img-range-request">
+            <img src="2.6-range-request.png" alt="Range запрос первых 100 байт">
+            <p>Скриншот 2.6 - Получение первых 100 байт</p>
+        </div>
+    </div>
+
+    <h2>7. Определение кодировки ресурса /index.php</h2>
+    <div class="task">
+        <p><strong>Команда:</strong></p>
+        <pre>curl -v -k -I https://u82314.kubsu-dev.ru/index.php</pre>
+        <p><strong>Результат:</strong> <span class="warning">HTTP/2 403 Forbidden</span></p>
+        <p><strong>Content-Type:</strong> <span class="success">text/html; charset=UTF-8</span></p>
+        <p><strong>Кодировка:</strong> <span class="success">UTF-8</span></p>
+        <p><em>Примечание:</em> Даже при отказе в доступе (403) сервер сообщает кодировку в заголовке Content-Type.</p>
+        <div class="screenshot img-charset">
+            <img src="2.7-charset.png" alt="Определение кодировки index.php">
+            <p>Скриншот 2.7 - Кодировка index.php (UTF-8)</p>
+        </div>
+    </div>
+</body>
+</html>
