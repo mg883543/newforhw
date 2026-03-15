@@ -1,16 +1,18 @@
--- Основная таблица для заявок
+-- Создаем основную таблицу для заявок
 CREATE TABLE application (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  name varchar(128) NOT NULL DEFAULT '',
-  year int(10) NOT NULL DEFAULT 0,
-  ability_god int(1) NOT NULL DEFAULT 0,
-  ability_fly int(1) NOT NULL DEFAULT 0,
-  ability_idclip int(1) NOT NULL DEFAULT 0,
-  ability_fireball int(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
+    id int(10) unsigned NOT NULL AUTO_INCREMENT,
+    full_name varchar(150) NOT NULL,
+    phone varchar(20) NOT NULL,
+    email varchar(100) NOT NULL,
+    birth_date date NOT NULL,
+    gender enum('male', 'female', 'other') NOT NULL,
+    biography text,
+    contract_accepted tinyint(1) NOT NULL DEFAULT 0,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Для языков программирования создадим отдельную таблицу (так как в задании требуют множественный выбор)
+-- Создаем таблицу для языков программирования (справочник)
 CREATE TABLE programming_languages (
     id int(10) unsigned NOT NULL AUTO_INCREMENT,
     name varchar(50) NOT NULL,
@@ -18,13 +20,22 @@ CREATE TABLE programming_languages (
     UNIQUE KEY name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Заполняем таблицу языков
+-- Заполняем таблицу языков программирования
 INSERT INTO programming_languages (name) VALUES 
-('Pascal'), ('C'), ('C++'), ('JavaScript'), ('PHP'), 
-('Python'), ('Java'), ('Haskell'), ('Clojure'), 
-('Prolog'), ('Scala'), ('Go');
+('Pascal'), 
+('C'), 
+('C++'), 
+('JavaScript'), 
+('PHP'), 
+('Python'), 
+('Java'), 
+('Haskell'), 
+('Clojure'), 
+('Prolog'), 
+('Scala'), 
+('Go');
 
--- Таблица связи заявок с языками программирования
+-- Создаем таблицу связи между заявками и языками (связь многие-ко-многим)
 CREATE TABLE application_languages (
     application_id int(10) unsigned NOT NULL,
     language_id int(10) unsigned NOT NULL,

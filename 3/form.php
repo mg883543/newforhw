@@ -3,9 +3,9 @@ session_start();
 
 // Параметры подключения к БД
 $host = 'localhost';
-$dbname = 'u82314'; // замените на ваш логин
-$username = 'u82314'; // замените на ваш логин
-$password = '2851429'; // замените на ваш пароль
+$dbname = 'u82314';
+$username = 'u82314';
+$password = '2851429';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
@@ -56,15 +56,8 @@ if (empty($input['birth_date'])) {
     }
 }
 
-// Валидация года
-if (empty($input['year'])) {
-    $errors['year'] = 'Поле Год обязательно для заполнения';
-} elseif (!is_numeric($input['year']) || $input['year'] < 1900 || $input['year'] > 2100) {
-    $errors['year'] = 'Год должен быть числом от 1900 до 2100';
-}
-
 // Валидация пола
-$allowed_genders = ['male', 'female', 'other'];
+$allowed_genders = ['male', 'female'];
 if (empty($input['gender'])) {
     $errors['gender'] = 'Поле Пол обязательно для выбора';
 } elseif (!in_array($input['gender'], $allowed_genders)) {
@@ -101,35 +94,18 @@ try {
     // Начинаем транзакцию
     $pdo->beginTransaction();
 
-    // Подготавливаем значения способностей (по умолчанию 0)
-    $abilities = [
-        'god' => 0,
-        'fly' => 0,
-        'idclip' => 0,
-        'fireball' => 0
-    ];
-    
-    // Обновляем значения из POST
-    if (isset($input['abilities'])) {
-        foreach ($input['abilities'] as $ability => $value) {
-            if (isset($abilities[$ability])) {
-                $abilities[$ability] = 1;
-            }
-        }
-    }
-
-    // Вставляем данные в таблицу application
-    $sql = "INSERT INTO application (name, year, ability_god, ability_fly, ability_idclip, ability_fireball) 
-            VALUES (:name, :year, :ability_god, :ability_fly, :ability_idclip, :ability_fireball)";
+    $sql = "INSERT INTO application (full_name, phone, email, birth_date, gender, biography, contract_accepted, created_at) 
+            VALUES (:full_name, :phone, :email, :birth_date, :gender, :biography, :contract_accepted, NOW())";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':name' => $input['full_name'],
-        ':year' => $input['year'],
-        ':ability_god' => $abilities['god'],
-        ':ability_fly' => $abilities['fly'],
-        ':ability_idclip' => $abilities['idclip'],
-        ':ability_fireball' => $abilities['fireball']
+        ':full_name' => $input['full_name'],
+        ':phone' => $input['phone'],
+        ':email' => $input['email'],
+        ':birth_date' => $input['birth_date'],
+        ':gender' => $input['gender'],
+        ':biography' => $input['biography'] ?? null,
+        ':contract_accepted' => 1
     ]);
 
     // Получаем ID последней вставленной записи
@@ -166,3 +142,4 @@ try {
 // Перенаправляем обратно на форму
 header('Location: index.php');
 exit;
+?>
