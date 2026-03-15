@@ -3,9 +3,9 @@ session_start();
 
 // Параметры подключения к БД
 $host = 'localhost';
-$dbname = 'ваш_логин'; // замените на ваш логин
-$username = 'ваш_логин'; // замените на ваш логин
-$password = 'ваш_пароль'; // замените на ваш пароль
+$dbname = 'u82314'; // замените на ваш логин
+$username = 'u82314'; // замените на ваш логин
+$password = '2851429'; // замените на ваш пароль
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
