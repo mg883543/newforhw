@@ -25,7 +25,7 @@ unset($_SESSION['old_input']);
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            background: #1e3c72;  /* Темно-синий фон */
             min-height: 100vh;
             padding: 20px;
         }
@@ -40,7 +40,7 @@ unset($_SESSION['old_input']);
         }
 
         .header {
-            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            background: #2a5298;  /* Синий фон для шапки */
             color: white;
             padding: 30px;
             text-align: center;
@@ -89,8 +89,8 @@ unset($_SESSION['old_input']);
 
         .form-control:focus {
             outline: none;
-            border-color: #4ecdc4;
-            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+            border-color: #2a5298;  /* Синий при фокусе */
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
         }
 
         .form-control.error {
@@ -187,7 +187,7 @@ unset($_SESSION['old_input']);
         }
 
         select[multiple] option:checked {
-            background: #4ecdc4 linear-gradient(0deg, #4ecdc4 0%, #4ecdc4 100%);
+            background: #2a5298;  /* Синий для выбранных опций */
             color: white;
         }
 
@@ -210,7 +210,7 @@ unset($_SESSION['old_input']);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            background: #2a5298;  /* Синий фон кнопки */
             color: white;
             border: none;
             padding: 15px 40px;
@@ -225,8 +225,9 @@ unset($_SESSION['old_input']);
         }
 
         .btn-submit:hover {
+            background: #1e3c72;  /* Темно-синий при наведении */
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.4);
         }
 
         .btn-submit:active {
@@ -263,7 +264,7 @@ unset($_SESSION['old_input']);
 <body>
     <div class="container">
         <div class="header">
-            <h1>Анкета супергероя</h1>
+            <h1>Анкета</h1>
             <p>Пожалуйста, заполните все обязательные поля</p>
         </div>
         
@@ -329,20 +330,6 @@ unset($_SESSION['old_input']);
                            value="<?php echo htmlspecialchars($old_input['birth_date'] ?? ''); ?>"
                            required>
                 </div>
-
-                <div class="form-group">
-                    <label for="year" class="required">Год</label>
-                    <input type="number" 
-                           class="form-control <?php echo isset($error_messages['year']) ? 'error' : ''; ?>" 
-                           id="year" 
-                           name="year" 
-                           value="<?php echo htmlspecialchars($old_input['year'] ?? ''); ?>"
-                           placeholder="2024"
-                           min="1900"
-                           max="2100"
-                           required>
-                </div>
-
                 <div class="form-group">
                     <label class="required">Пол</label>
                     <div class="radio-group">
@@ -363,15 +350,6 @@ unset($_SESSION['old_input']);
                                    <?php echo (isset($old_input['gender']) && $old_input['gender'] == 'female') ? 'checked' : ''; ?>
                                    required>
                             <label for="gender_female">Женский</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" 
-                                   id="gender_other" 
-                                   name="gender" 
-                                   value="other"
-                                   <?php echo (isset($old_input['gender']) && $old_input['gender'] == 'other') ? 'checked' : ''; ?>
-                                   required>
-                            <label for="gender_other">Другой</label>
                         </div>
                     </div>
                 </div>
@@ -396,44 +374,6 @@ unset($_SESSION['old_input']);
                         <?php endforeach; ?>
                     </select>
                     <div class="info-text">Для множественного выбора используйте Ctrl/Cmd + клик</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Способности</label>
-                    <div class="abilities-group">
-                        <div class="ability-item">
-                            <input type="checkbox" 
-                                   id="ability_god" 
-                                   name="abilities[god]" 
-                                   value="1"
-                                   <?php echo (isset($old_input['abilities']['god']) && $old_input['abilities']['god'] == '1') ? 'checked' : ''; ?>>
-                            <label for="ability_god">Бог</label>
-                        </div>
-                        <div class="ability-item">
-                            <input type="checkbox" 
-                                   id="ability_fly" 
-                                   name="abilities[fly]" 
-                                   value="1"
-                                   <?php echo (isset($old_input['abilities']['fly']) && $old_input['abilities']['fly'] == '1') ? 'checked' : ''; ?>>
-                            <label for="ability_fly">Полет</label>
-                        </div>
-                        <div class="ability-item">
-                            <input type="checkbox" 
-                                   id="ability_idclip" 
-                                   name="abilities[idclip]" 
-                                   value="1"
-                                   <?php echo (isset($old_input['abilities']['idclip']) && $old_input['abilities']['idclip'] == '1') ? 'checked' : ''; ?>>
-                            <label for="ability_idclip">IDCLIP</label>
-                        </div>
-                        <div class="ability-item">
-                            <input type="checkbox" 
-                                   id="ability_fireball" 
-                                   name="abilities[fireball]" 
-                                   value="1"
-                                   <?php echo (isset($old_input['abilities']['fireball']) && $old_input['abilities']['fireball'] == '1') ? 'checked' : ''; ?>>
-                            <label for="ability_fireball">Фаербол</label>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-group">
