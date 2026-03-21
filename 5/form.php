@@ -8,8 +8,18 @@ $username = 'u82314';
 $password = '2851429';
 
 function generateLogin($full_name) {
+    // Убираем все символы, кроме букв (латиница и кириллица)
     $name = preg_replace('/[^a-zA-Zа-яА-Я]/u', '', $full_name);
-    $name = mb_substr($name, 0, 10);
+    
+    // Если строка пустая, используем 'user'
+    if (empty($name)) {
+        $name = 'user';
+    }
+    
+    // Берем первые 10 символов с корректной работой с UTF-8
+    $chars = preg_split('//u', $name, -1, PREG_SPLIT_NO_EMPTY);
+    $name = implode('', array_slice($chars, 0, 10));
+    
     $random = rand(100, 999);
     return strtolower($name) . $random;
 }
@@ -239,6 +249,7 @@ try {
     }
     
     $_SESSION['success_message'] = $is_authenticated ? 'Данные успешно обновлены!' : 'Данные успешно сохранены!';
+    
     
 } catch (Exception $e) {
     $pdo->rollBack();
